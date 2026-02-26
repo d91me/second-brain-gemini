@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     build-essential \
+    gettext-base \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -29,11 +30,9 @@ RUN uv pip install --system .
 # Copy the application code
 COPY . .
 
-# Ensure the Gemini settings directory exists and copy settings
-# We will use an entrypoint script to substitute variables if needed, 
-# or just copy the template if dynamic substitution isn't strictly required by Gemini.
+# Ensure the Gemini settings directory exists
+# settings.json template is kept in /app/.gemini/ — envsubst runs at startup
 RUN mkdir -p /root/.gemini
-COPY .gemini/settings.json /root/.gemini/settings.json
 
 # Ensure vault directory exists (it should be mounted as a volume in Coolify)
 RUN mkdir -p /app/vault
@@ -41,5 +40,8 @@ RUN mkdir -p /app/vault
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Command to run the bot
-CMD ["python", "-m", "d_brain"]
+# Copy and set up entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

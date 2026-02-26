@@ -41,8 +41,16 @@ venv.bak/
 *~
 .DS_Store
 
-# Application specific
-vault/
+# Application specific — vault personal data (keep skeleton for skills/goals/templates)
+vault/daily/
+vault/contacts/
+vault/finances/
+vault/attachments/
+vault/.session/
+vault/.graph/
+vault/business/
+vault/projects/
+vault/thoughts/
 logs/
 .claude/
 # Allow .gemini/settings.json to be copied, but ignore potential local logs/cache
