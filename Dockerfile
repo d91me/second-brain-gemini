@@ -20,14 +20,14 @@ RUN npm install -g @google/gemini-cli
 # Set working directory
 WORKDIR /app
 
-# Copy dependency files first to leverage Docker cache
+# Copy dependency + source files needed for pip install
 COPY pyproject.toml .
+COPY src/ src/
 
 # Install Python dependencies using uv
-# --no-dev flag is used because this is an environment meant for production bot
 RUN uv pip install --system .
 
-# Copy the application code
+# Copy the rest of the application (entrypoint, vault skeleton, .gemini, docs, etc.)
 COPY . .
 
 # Ensure the Gemini settings directory exists
@@ -40,8 +40,8 @@ RUN mkdir -p /app/vault
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Copy and set up entrypoint script
-COPY entrypoint.sh /entrypoint.sh
+# Set up entrypoint script
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+
