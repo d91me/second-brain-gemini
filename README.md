@@ -1,8 +1,8 @@
 # Agent Second Brain
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Stars](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fd91me%2Fsecond-brain-gemini&query=%24.stargazers_count&label=stars&logo=github&color=blue)](https://github.com/d91me/second-brain-gemini/stargazers)
-[![Forks](https://img.shields.io/github/forks/d91me/second-brain-gemini?style=flat&logo=github)](https://github.com/d91me/second-brain-gemini/forks)
+[![Stars](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fimitry%2Fsecond-brain-gemini&query=%24.stargazers_count&label=stars&logo=github&color=blue)](https://github.com/imitry/second-brain-gemini/stargazers)
+[![Forks](https://img.shields.io/github/forks/imitry/second-brain-gemini?style=flat&logo=github)](https://github.com/imitry/second-brain-gemini/forks)
 
 <p align="center">
   <img alt="Agent Second Brain" src="https://github.com/user-attachments/assets/5b3611d9-11ba-40a1-92fc-8dc78d78d75b" />
@@ -72,7 +72,7 @@ Skills live in `vault/.gemini/skills/` and are invoked automatically by Gemini C
 
 ### 1. Fork this repo
 
-Go to [github.com/d91me/second-brain-gemini](https://github.com/d91me/second-brain-gemini) and click **Fork**. Make the fork **private** — it will contain your personal data.
+Go to [github.com/imitry/second-brain-gemini](https://github.com/imitry/second-brain-gemini) and click **Fork**. Make the fork **private** — it will contain your personal data.
 
 ### 2. Clone to your machine
 
@@ -101,17 +101,19 @@ Open the following files and replace the placeholders with your information:
 | Deepgram API Key | [console.deepgram.com](https://console.deepgram.com/) |
 | Todoist API Token | [todoist.com](https://todoist.com) → Settings → Integrations → Developer |
 
-### 5. Deploy to VPS
+### 5. Deploy with Docker
 
-Follow the detailed server setup guide: **[docs/vps-setup.md](docs/vps-setup.md)**
+We recommend deploying using Docker or Coolify for a fast and reproducible setup. 
 
-Short version:
+All detailed options, including manual VPS setup and Coolify deployment, can be found in the docs:
+- **[docs/vps-setup.md](docs/vps-setup.md)** for manual VPS
+- **[docs/coolify-deployment.ru.md](docs/coolify-deployment.ru.md)** for Coolify (RU)
 
-```bash
-ssh root@YOUR_SERVER_IP
-# Create a user, install dependencies, clone repo, configure .env
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/second-brain-gemini/main/bootstrap.sh | bash
-```
+Short version (Docker):
+
+1. Create a `docker-compose.yml` based on the repository structure.
+2. Provide your `.env` file credentials.
+3. Run `docker-compose up -d`.
 
 ---
 

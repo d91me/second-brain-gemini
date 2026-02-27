@@ -1,4 +1,4 @@
-"""Handler for /do command - arbitrary Claude requests."""
+"""Handler for /do command - arbitrary Gemini requests."""
 
 import asyncio
 import logging
@@ -87,7 +87,7 @@ async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None
 
 
 async def process_request(message: Message, prompt: str, user_id: int = 0) -> None:
-    """Process the user's request with Claude."""
+    """Process the user's request with Gemini."""
     status_msg = await message.answer("⏳ Выполняю...")
 
     settings = get_settings()

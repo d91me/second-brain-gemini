@@ -1,6 +1,6 @@
 # Long-term Memory
 
-Curated knowledge that persists across sessions. Part of the 3-layer memory architecture (hot context → searchable vault → archive). See `.claude/skills/agent-memory/SKILL.md` for details.
+Curated knowledge that persists across sessions. Part of the 3-layer memory architecture (hot context → searchable vault → archive). See `.gemini/skills/agent-memory/SKILL.md` for details.
 
 ## User Profile
 
@@ -16,7 +16,7 @@ Curated knowledge that persists across sessions. Part of the 3-layer memory arch
 ### Tech Stack
 - Languages: [e.g., Python, TypeScript]
 - Frameworks: [e.g., React, FastAPI]
-- Tools: [e.g., Cursor, Claude Code]
+- Tools: [e.g., Cursor, Gemini CLI]
 
 ### Communication Style
 - Preferred response language: [Russian/English/Mixed]

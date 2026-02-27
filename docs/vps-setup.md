@@ -132,11 +132,9 @@ npm install -g @google/gemini-cli
 which gemini
 gemini --version
 
-# Setup API Key
-# Add GEMINI_API_KEY to your .env file
-```
-
-After obtaining your Gemini API key from Google AI Studio.
+# Setup OAuth
+# Detailed instructions for OAuth are handled by the bot on first run.
+# You do not need a direct GEMINI_API_KEY.
 
 ---
 
@@ -147,7 +145,7 @@ cd ~
 mkdir -p projects
 cd projects
 
-git clone https://github.com/d91me/second-brain-gemini.git
+git clone https://github.com/imitry/second-brain-gemini.git
 cd second-brain-gemini
 
 ls -la
@@ -208,7 +206,7 @@ Paste (replace with your values):
 ```bash
 TELEGRAM_BOT_TOKEN=7123456789:AAHdN8J2K4m5N6o7P8q9R0s1T2u3V4w5X6y
 DEEPGRAM_API_KEY=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0
-GEMINI_API_KEY=
+
 VAULT_PATH=./vault
 ALLOWED_USER_IDS=[123456789]
 ```
@@ -382,7 +380,7 @@ sudo systemctl list-timers | grep d-brain
 ## Step 18: Git Configuration
 
 ```bash
-cd ~/projects/agent-second-brain
+cd ~/projects/second-brain-gemini
 
 git config user.email "your@email.com"
 git config user.name "Your Name"
@@ -452,29 +450,27 @@ sudo systemctl restart d-brain-bot
 ```bash
 sudo systemctl status d-brain-bot
 sudo journalctl -u d-brain-bot -n 100
-cat ~/projects/agent-second-brain/.env | grep TELEGRAM_BOT_TOKEN
+cat ~/projects/second-brain-gemini/.env | grep TELEGRAM_BOT_TOKEN
 sudo systemctl restart d-brain-bot
 ```
 
 ### Voice not transcribing
 
 ```bash
-cat ~/projects/agent-second-brain/.env | grep DEEPGRAM
+cat ~/projects/second-brain-gemini/.env | grep DEEPGRAM
 sudo journalctl -u d-brain-bot | grep -i error
 ```
 
 ### Processing errors
 
 ```bash
-claude --version
-claude auth status
-claude auth login  # if needed
+gemini --version
 ```
 
 ### Todoist not working
 
 ```bash
-cat ~/projects/agent-second-brain/.env | grep TODOIST
+cat ~/projects/second-brain-gemini/.env | grep TODOIST
 mcp-cli call todoist find-tasks-by-date '{"startDate": "today"}'
 ```
 

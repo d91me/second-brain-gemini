@@ -1,7 +1,7 @@
 #!/bin/bash
 # Agent Second Brain — One-command installer
 # Works on Mac and Windows WSL
-# https://github.com/d91me/second-brain-gemini
+# https://github.com/imitry/second-brain-gemini
 
 set -e
 
@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Config
-REPO_URL="https://github.com/d91me/second-brain-gemini.git"
+REPO_URL="https://github.com/imitry/second-brain-gemini.git"
 INSTALL_DIR="$HOME/second-brain-gemini"
 
 #######################################
@@ -344,15 +344,10 @@ setup_gemini() {
     echo
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${YELLOW}Gemini Setup${NC}"
-    echo "Make sure you have a Gemini API key."
+    echo "Gemini API access is configured via OAuth."
+    echo "Detailed instructions for OAuth are handled by the bot on first run."
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo
-
-    if [[ -n "$GEMINI_API_KEY" ]]; then
-        success "Gemini API key configured"
-    else
-        info "You will need to set GEMINI_API_KEY in your .env file."
-    fi
 }
 
 #######################################

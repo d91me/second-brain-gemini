@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "Voice-first personal assistant for Telegram with Obsidian and Todoist integration"
 readme = "README.md"
 authors = [
-    { name = "d91me" }
+    { name = "imitry" }
 ]
 requires-python = ">=3.12"
 dependencies = [

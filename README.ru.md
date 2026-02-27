@@ -1,8 +1,8 @@
 # Agent Second Brain v2
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Stars](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fd91me%2Fsecond-brain-gemini&query=%24.stargazers_count&label=stars&logo=github&color=blue)](https://github.com/d91me/second-brain-gemini/stargazers)
-[![Forks](https://img.shields.io/github/forks/d91me/second-brain-gemini?style=flat&logo=github)](https://github.com/d91me/second-brain-gemini/forks)
+[![Stars](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fimitry%2Fsecond-brain-gemini&query=%24.stargazers_count&label=stars&logo=github&color=blue)](https://github.com/imitry/second-brain-gemini/stargazers)
+[![Forks](https://img.shields.io/github/forks/imitry/second-brain-gemini?style=flat&logo=github)](https://github.com/imitry/second-brain-gemini/forks)
 
 <p align="center">
   <img alt="Agent Second Brain" src="https://github.com/user-attachments/assets/ea384e65-436b-48a1-a4e1-2b003cafcdbf" />
@@ -21,7 +21,7 @@
 | Параметр | Значение |
 |----------|----------|
 | **Время на настройку** | 2--3 часа. Не торопитесь -- лучше один раз сделать правильно. |
-| **Стоимость** | ~$25/мес (Claude Pro $20 + VPS $5) |
+| **Стоимость** | ~$25/мес (Gemini API ~$5 + VPS ~$5) |
 | **Приватность** | Это ваш личный сервер. Никто, кроме вас, не имеет доступа к записям и задачам. |
 
 ---
@@ -48,7 +48,7 @@
 - **Agent Memory** -- кривая забывания Эббингауза с пятью уровнями затухания: core, active, warm, cold, archive. Карточки памяти теряют вес со временем, а обращение к ним возвращает их в активный слой.
 - **Vault Health** -- автоматический скоринг здоровья хранилища, генерация Maps of Content, починка битых ссылок, поиск orphan-заметок без связей.
 - **3-фазный Pipeline** -- обработка разделена на CAPTURE, EXECUTE и REFLECT с передачей JSON между фазами. Каждая фаза изолирована и может быть перезапущена отдельно.
-- **Правила форматирования** -- obsidian-markdown, weekly-reflection и другие правила в `.claude/rules/` для единообразия записей.
+- **Правила форматирования** -- obsidian-markdown, weekly-reflection и другие правила в `.gemini/rules/` для единообразия записей.
 - **Конфиг памяти** -- файл `.memory-config.json` позволяет настроить скорость затухания, пороги уровней и автоматическое определение типа карточки.
 
 ---
@@ -60,7 +60,7 @@ Telegram (голос/текст/фото)
     |
 Telegram Bot (Node.js) --> Deepgram (голос-->текст)
     |
-Claude Code (--print --dangerously-skip-permissions)
+Gemini CLI (--approval-mode yolo --sandbox false)
     |
 +-- CAPTURE: классификация записей --> JSON
 +-- EXECUTE: задачи Todoist + записи в vault --> JSON
@@ -86,7 +86,7 @@ Claude Code (--print --dangerously-skip-permissions)
 | **graph-builder** | Анализ графа знаний, связи между сущностями, маппинг доменов |
 | **todoist-ai** | Управление задачами через mcp-cli (интеграция Todoist MCP) |
 
-Каждый скилл описан в `vault/.claude/skills/<name>/SKILL.md` и может быть вызван агентом автоматически или по запросу пользователя.
+Каждый скилл описан в `vault/.gemini/skills/<name>/SKILL.md` и может быть вызван агентом автоматически или по запросу пользователя.
 
 ---
 
@@ -94,7 +94,7 @@ Claude Code (--print --dangerously-skip-permissions)
 
 ### 1. Сделайте Fork
 
-Откройте [репозиторий](https://github.com/d91me/second-brain-gemini) и нажмите кнопку **Fork** в правом верхнем углу.
+Откройте [репозиторий](https://github.com/imitry/second-brain-gemini) и нажмите кнопку **Fork** в правом верхнем углу.
 
 > **Важно:** Сделайте репозиторий приватным. Ваши цели, мысли и записи не должны быть публичными.
 > Settings -> Danger Zone -> Change visibility -> Private.
@@ -114,8 +114,8 @@ cd second-brain-gemini
 - `vault/goals/1-yearly.md` -- цели на год
 - `vault/goals/2-monthly.md` -- приоритеты на месяц
 - `vault/goals/3-weekly.md` -- фокус на неделю (ONE Big Thing)
-- `vault/.claude/skills/dbrain-processor/references/about.md` -- ваш профиль
-- `vault/.claude/skills/dbrain-processor/references/classification.md` -- категории записей
+- `vault/.gemini/skills/dbrain-processor/references/about.md` -- ваш профиль
+- `vault/.gemini/skills/dbrain-processor/references/classification.md` -- категории записей
 
 > **Совет:** Скопируйте содержимое шаблона в Claude или ChatGPT и попросите заполнить. AI задаст уточняющие вопросы по одному и вернёт готовый файл. Это самый быстрый способ -- не нужно придумывать формулировки самому.
 
@@ -128,17 +128,18 @@ cd second-brain-gemini
 | Deepgram API Key | [console.deepgram.com](https://console.deepgram.com/) | Длинная строка |
 | Todoist API Token | [todoist.com](https://todoist.com) -> Settings -> Integrations | 40 символов |
 
-### 5. Разверните на VPS
+### 5. Развертывание через Docker
 
-Подключитесь к серверу и запустите bootstrap-скрипт:
+Мы рекомендуем использовать Docker или Coolify для надежного и быстрого развертывания.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/second-brain-gemini/main/bootstrap.sh | bash
-```
+Подробные инструкции по установке:
+- **[Развертывание через Coolify](docs/coolify-deployment.ru.md)** 
+- **[Ручная установка на VPS](docs/vps-setup.md)**
 
-Скрипт сам скачает проект, спросит все токены, создаст `.env`, настроит автозапуск и запустит бота.
+Краткая инструкция (Docker):
 
-Если нужна пошаговая ручная настройка: [docs/vps-setup.md](docs/vps-setup.md)
+1. Скопируйте файл конфигурации и настройте значения в `.env`.
+2. Запустите `docker-compose up -d`.
 
 ---
 
@@ -149,8 +150,8 @@ curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/second-brain-gemini/m
 | `.env` | API-токены (Telegram, Deepgram, Todoist). Создаётся из `.env.example` |
 | `.memory-config.json` | Скорость затухания, пороги уровней, автоматическое определение типа карточки |
 | `mcp-config.json` | Конфигурация MCP-серверов (Todoist и другие) |
-| `vault/.claude/CLAUDE.md` | Инструкции агента, session bootstrap, навигация по vault |
-| `vault/.claude/skills/dbrain-processor/references/about.md` | Ваш профиль для контекста обработки |
+| `vault/.gemini/GEMINI.md` | Инструкции агента, session bootstrap, навигация по vault |
+| `vault/.gemini/skills/dbrain-processor/references/about.md` | Ваш профиль для контекста обработки |
 
 ### Пример .memory-config.json
 
@@ -191,7 +192,7 @@ vault/
 +-- templates/       # Шаблоны карточек (CRM, daily)
 +-- MOC/             # Maps of Content (авто-генерация)
 +-- MEMORY.md        # Долгосрочная память (hot context)
-+-- .claude/         # Конфигурация агента
++-- .gemini/         # Конфигурация агента
     +-- skills/      # 5 скиллов
     +-- rules/       # Правила форматирования
     +-- docs/        # Справочная документация
@@ -269,7 +270,7 @@ health = 100 - orphan_penalty - broken_penalty - density_penalty - desc_penalty
 
 | Сервис | Стоимость | Назначение |
 |--------|-----------|------------|
-| Claude Pro | $20/мес | AI-обработка записей и запросы |
+| Gemini API | ~$1-5/мес | AI-обработка записей и запросы |
 | VPS | ~$5/мес | Хостинг бота 24/7 |
 | Deepgram | Бесплатно ($200 кредит) | Транскрипция голосовых сообщений |
 | Todoist | Бесплатно / $4/мес Pro | Управление задачами |
@@ -347,27 +348,21 @@ sudo journalctl -u d-brain-bot -f --no-pager -n 50
 
 Проверьте Deepgram API Key в файле `.env`. Убедитесь, что ключ актуален и не истёк стартовый кредит ($200).
 
-### Ошибки Claude
+### Ошибки Gemini
 
-Проверьте авторизацию:
-
-```bash
-claude auth status
-```
-
-Если нужно авторизоваться заново:
+Проверьте авторизацию или переустановите CLI, если нужно:
 
 ```bash
-claude auth login
+gemini --version
 ```
 
 ### Интерактивная отладка
 
-Самый быстрый способ разобраться с любой проблемой -- запустить Claude прямо в директории проекта:
+Самый быстрый способ разобраться с любой проблемой -- запустить Gemini CLI прямо в директории проекта:
 
 ```bash
 cd ~/second-brain-gemini
-claude
+gemini
 ```
 
 Опишите проблему, и агент сам прочитает конфигурацию, проверит логи и предложит решение.

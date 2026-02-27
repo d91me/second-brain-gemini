@@ -576,17 +576,9 @@ check_status() {
 setup_gemini() {
     step "Gemini CLI Setup"
 
-    if [ -n "$GEMINI_API_KEY" ]; then
-        success "GEMINI_API_KEY is configured"
-        return
-    fi
-
-    warn "GEMINI_API_KEY is not set in env"
+    info "Gemini API access is configured via OAuth."
     echo ""
-    echo "Run this command manually:"
-    echo -e "  ${CYAN}You will need to set GEMINI_API_KEY in .env${NC}"
-    echo ""
-    echo "This will open a browser for authentication."
+    echo "Detailed instructions for OAuth are handled by the bot on first run."
     echo "After configuring it, the bot will be able to use Gemini for AI processing."
     echo ""
 }

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @router.message(Command("process"))
 async def cmd_process(message: Message) -> None:
-    """Handle /process command - trigger Claude processing."""
+    """Handle /process command - trigger Gemini processing."""
     user_id = message.from_user.id if message.from_user else "unknown"
     logger.info("Process command triggered by user %s", user_id)
 
