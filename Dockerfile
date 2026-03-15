@@ -26,11 +26,10 @@ ENV PATH="/root/.local/bin:${PATH}"
 # Set working directory
 WORKDIR /app
 
-# Copy dependency definition files first for caching
-COPY pyproject.toml .
-# Note: if uv.lock exists, it's better to copy it too: COPY pyproject.toml uv.lock ./
+# Copy dependency files first for caching
+COPY pyproject.toml uv.lock ./
 
-# Copy the rest of the application
+# Copy the rest of the application (source needed for uv to resolve the package)
 COPY . .
 
 # Install python dependencies using uv
