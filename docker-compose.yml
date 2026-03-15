@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: second-brain-gemini-bot
+    restart: unless-stopped
+    volumes:
+      - ./vault:/app/vault
+      - ~/.config/gemini:/root/.config/gemini # Required for OAuth persistence
+    env_file:
+      - .env
