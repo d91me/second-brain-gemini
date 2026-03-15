@@ -16,7 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(lambda m: m.voice is not None)
-async def handle_voice(message: Message, bot: Bot) -> None:
+async def handle_voice(
+    message: Message, bot: Bot, transcriber: DeepgramTranscriber
+) -> None:
     """Handle voice messages."""
     if not message.voice or not message.from_user:
         return
@@ -25,7 +27,6 @@ async def handle_voice(message: Message, bot: Bot) -> None:
 
     settings = get_settings()
     storage = VaultStorage(settings.vault_path)
-    transcriber = DeepgramTranscriber(settings.deepgram_api_key)
 
     try:
         file = await bot.get_file(message.voice.file_id)

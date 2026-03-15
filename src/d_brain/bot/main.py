@@ -33,14 +33,22 @@ class ProxyAiohttpSession(AiohttpSession):
         if self._connector is None or self._connector.closed:
             self._connector = ProxyConnector.from_url(self.proxy_url)
 
-        return aiohttp.ClientSession(connector=self._connector)
+        # IMPORTANT: connector_owner=False tells ClientSession NOT to close
+        # our shared connector when the session is closed.
+        # aiogram creates sessions frequently, so we must manage the connector lifecycle ourselves.
+        return aiohttp.ClientSession(connector=self._connector, connector_owner=False)
 
     async def close(self) -> None:
         """Close the session and the connector."""
+        # Close standard session if it exists
         if self._session is not None and not self._session.closed:
             await self._session.close()
+
+        # Close our persistent connector
         if self._connector is not None and not self._connector.closed:
             await self._connector.close()
+
+        await super().close()
 
 
 def create_bot(settings: Settings) -> Bot:
@@ -124,8 +132,16 @@ def create_auth_middleware(settings: Settings) -> MiddlewareType:
 
 async def run_bot(settings: Settings) -> None:
     """Run the bot with polling."""
+    from d_brain.services.transcription import DeepgramTranscriber
+
     bot = create_bot(settings)
     dp = create_dispatcher()
+
+    # Initialize shared services
+    transcriber = DeepgramTranscriber(settings.deepgram_api_key)
+
+    # Inject dependencies into dispatcher so handlers can use them
+    dp["transcriber"] = transcriber
 
     # Always add auth middleware for security (it handles allow_all_users internally)
     dp.update.middleware(create_auth_middleware(settings))
@@ -134,4 +150,7 @@ async def run_bot(settings: Settings) -> None:
     try:
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
-        await bot.session.close()
+        # Proper cleanup of all resources
+        await transcriber.close()
+        if bot.session:
+            await bot.session.close()

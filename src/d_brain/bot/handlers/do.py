@@ -37,7 +37,9 @@ async def cmd_do(message: Message, command: CommandObject, state: FSMContext) ->
 
 
 @router.message(DoCommandState.waiting_for_input)
-async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None:
+async def handle_do_input(
+    message: Message, bot: Bot, state: FSMContext, transcriber: DeepgramTranscriber
+) -> None:
     """Handle voice/text input after /do command."""
     await state.clear()  # Clear state immediately
 
@@ -46,9 +48,6 @@ async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None
     # Handle voice input
     if message.voice:
         await message.chat.do(action="typing")
-        settings = get_settings()
-        transcriber = DeepgramTranscriber(settings.deepgram_api_key)
-
         try:
             file = await bot.get_file(message.voice.file_id)
             if not file.file_path:
