@@ -1,0 +1,12 @@
+{
+  "name": "agent-second-brain",
+  "version": "1.0.0",
+  "description": "Voice-first personal assistant for Telegram with Obsidian and Todoist integration",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "todoist": {
+      "command": "mcp-cli",
+      "args": ["server", "todoist"]
+    }
+  }
+}
