@@ -18,16 +18,31 @@ from d_brain.config import Settings
 logger = logging.getLogger(__name__)
 
 
+class ProxyAiohttpSession(AiohttpSession):
+    """Custom session with SOCKS5 proxy support."""
+
+    def __init__(self, proxy_url: str, **kwargs: Any) -> None:
+        self.proxy_url = proxy_url
+        super().__init__(**kwargs)
+
+    async def create_session(self) -> aiohttp.ClientSession:
+        """Create a session with the proxy connector."""
+        from aiohttp_socks import ProxyConnector
+
+        connector = ProxyConnector.from_url(self.proxy_url)
+        return aiohttp.ClientSession(connector=connector)
+
+
 def create_bot(settings: Settings) -> Bot:
     """Create and configure the Telegram bot."""
     proxy_url = os.getenv("PROXY_URL")
 
     if proxy_url:
-        from aiohttp_socks import ProxyConnector
-
-        logger.info("Using SOCKS5 proxy: %s", proxy_url.split("@")[-1] if "@" in proxy_url else proxy_url)
-        connector = ProxyConnector.from_url(proxy_url)
-        session = AiohttpSession(connector=connector)
+        logger.info(
+            "Using SOCKS5 proxy: %s",
+            proxy_url.split("@")[-1] if "@" in proxy_url else proxy_url,
+        )
+        session = ProxyAiohttpSession(proxy_url=proxy_url)
         return Bot(
             token=settings.telegram_bot_token,
             default=DefaultBotProperties(parse_mode=ParseMode.HTML),
