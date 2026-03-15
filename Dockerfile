@@ -37,7 +37,8 @@ RUN uv sync
 
 # Copy entrypoint that maps PROXY_URL to ALL_PROXY/HTTP_PROXY/HTTPS_PROXY
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Strip Windows CRLF line endings (prevents /bin/bash\r: not found)
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 

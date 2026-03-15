@@ -1,0 +1,6 @@
+# Force LF line endings for all shell scripts (critical for Docker on Linux)
+*.sh text eol=lf
+entrypoint.sh text eol=lf
+
+# Keep Python files consistent
+*.py text eol=lf
